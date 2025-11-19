@@ -30,7 +30,7 @@ COPY . .
 RUN pip install uv
 
 # Install dependencies using uv (correct method)
-RUN uv sync --no-dev --frozen --system
+RUN uv sync 
 
 # Install Playwright + Chromium browser
 RUN playwright install chromium
