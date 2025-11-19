@@ -32,9 +32,9 @@ RUN pip install uv
 RUN uv sync
 
 # Install Playwright and Chromium
-RUN uv run playwright install chromium
+RUN uv run +playwright install chromium
 
 EXPOSE 8000
 
-CMD ["uv", "run", "uvicorn", "src.wetransfer_downloader.api:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uv", "run", "uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
