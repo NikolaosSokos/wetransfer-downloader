@@ -29,7 +29,7 @@ COPY . .
 RUN pip install uv
 
 # Install project dependencies using uv
-RUN uv pip install -r ./uv.lock --system
+RUN uv sync
 
 # Install Playwright and Chromium
 RUN playwright install chromium
