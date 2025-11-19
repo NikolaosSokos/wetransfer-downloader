@@ -1,6 +1,6 @@
 FROM python:3.12-slim
 
-# Install OS dependencies required by Playwright
+# Install system dependencies for Playwright
 RUN apt-get update && apt-get install -y \
     libasound2t64 \
     libatk-bridge2.0-0 \
@@ -18,26 +18,23 @@ RUN apt-get update && apt-get install -y \
     libxshmfence1 \
     libpci3 \
     wget \
-    curl \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Copy project
+# Copy project files
 COPY . .
 
 # Install uv
 RUN pip install uv
 
-# Install project dependencies via uv (your choice)
-RUN uv sync --no-dev --frozen
+# Install project dependencies using uv
+RUN uv pip install -r ./uv.lock --system
 
-# Install Playwright using pip (this installs the CLI)
-RUN pip install playwright
-
-# Install Chromium browser for Playwright
+# Install Playwright and Chromium
 RUN playwright install chromium
 
 EXPOSE 8000
 
-CMD ["uvicorn", "src.wetransfer_downloader.api:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uv", "run", "uvicorn", "src.wetransfer_downloader.api:app", "--host", "0.0.0.0", "--port", "8000"]
+
