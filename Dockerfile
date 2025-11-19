@@ -1,6 +1,6 @@
 FROM python:3.12-slim
 
-# Install system dependencies for Playwright
+# Install OS dependencies required by Playwright
 RUN apt-get update && apt-get install -y \
     libasound2t64 \
     libatk-bridge2.0-0 \
@@ -23,16 +23,19 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-# Copy all project files (including requirements.txt)
+# Copy project
 COPY . .
 
 # Install uv
 RUN pip install uv
 
-# Install dependencies using uv (FOR YOUR UV VERSION)
-RUN uv pip install --system -r requirements.txt
+# Install project dependencies via uv (your choice)
+RUN uv sync --no-dev --frozen
 
-# Install Playwright + Chromium
+# Install Playwright using pip (this installs the CLI)
+RUN pip install playwright
+
+# Install Chromium browser for Playwright
 RUN playwright install chromium
 
 EXPOSE 8000
