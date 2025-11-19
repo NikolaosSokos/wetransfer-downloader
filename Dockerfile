@@ -32,7 +32,7 @@ RUN pip install uv
 RUN uv sync
 
 # Install Playwright and Chromium
-RUN playwright install chromium
+RUN uv run playwright install chromium
 
 EXPOSE 8000
 
