@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: wetransfer-downloader
+Version: 0.1.0
+Summary: Secure WeTransfer downloader with CLI and FastAPI microservice.
+Author: Nikos Sokos
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi
+Requires-Dist: uvicorn
+Requires-Dist: playwright
+Requires-Dist: requests

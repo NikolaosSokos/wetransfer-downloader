@@ -22,76 +22,55 @@ class WeTransferDownloader:
             context = browser.new_context(accept_downloads=True)
             page = context.new_page()
 
-            # 1. Open the short link
-            logger.info("Navigating to short link…")
             page.goto(link)
-
-            # 2. Wait for redirect to the real download page
-            logger.info("Waiting for redirect to /downloads/... page…")
             page.wait_for_url("**/downloads/**", timeout=20000)
-            logger.info(f"Redirected to: {page.url}")
-
-            # 3. Wait for React UI to load
             page.wait_for_load_state("networkidle")
 
-            # 4. Handle cookie popup
+            # Cookie acceptance
             try:
-                page.locator("button:has-text('Accept')").click(timeout=6000)
-                logger.info("Cookie popup closed.")
+                page.locator("button:has-text('Accept')").click(timeout=4000)
             except:
                 pass
 
-            # 5. Handle “I accept” or pre-download confirmation
-            pre_accept = [
+            # Pre-download buttons
+            for sel in [
                 "button:has-text('I accept')",
-                "button:has-text('I agree')",
                 "button:has-text('I understand')",
-                "button:has-text('Accept and continue')",
-            ]
-
-            for sel in pre_accept:
+                "button:has-text('Agree')",
+            ]:
                 try:
-                    btn = page.locator(sel)
-                    btn.wait_for(timeout=4000)
-                    btn.click()
-                    logger.info(f"Clicked pre-download button: {sel}")
+                    p = page.locator(sel)
+                    p.wait_for(timeout=4000)
+                    p.click()
                     break
                 except:
                     pass
 
-            # 6. Find the real Download button
-            selectors = [
+            # Download button
+            dl_button = None
+            for sel in [
                 "[data-testid='download-transfer-button']",
                 "button:has-text('Download')",
                 "button:has-text('Download all')",
                 "button:has-text('Get files')",
-                "a:has-text('Download')",
-            ]
-
-            download_button = None
-
-            for sel in selectors:
+            ]:
                 try:
                     locator = page.locator(sel).first
-                    locator.wait_for(timeout=9000)
-                    download_button = locator
-                    logger.info(f"Found download button using: {sel}")
+                    locator.wait_for(timeout=8000)
+                    dl_button = locator
                     break
                 except:
                     pass
 
-            if not download_button:
+            if not dl_button:
                 raise RuntimeError("Could not find the Download button.")
 
-            # 7. Download the file
-            with page.expect_download() as dl_info:
-                logger.info("Clicking download button…")
-                download_button.click()
+            with page.expect_download() as info:
+                dl_button.click()
 
-            dl = dl_info.value
-            output_path = self.output_dir / dl.suggested_filename
-            dl.save_as(output_path)
-
-            logger.info(f"Saved → {output_path}")
+            dl = info.value
+            destination = self.output_dir / dl.suggested_filename
+            dl.save_as(destination)
 
             browser.close()
+            return destination

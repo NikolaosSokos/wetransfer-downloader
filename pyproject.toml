@@ -1,21 +1,26 @@
 [project]
 name = "wetransfer-downloader"
 version = "0.1.0"
-description = "A WeTransfer web scraping downloader"
+description = "Secure WeTransfer downloader with CLI and FastAPI microservice."
+authors = [
+    { name = "Nikos Sokos" }
+]
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
+
 dependencies = [
+    "fastapi",
+    "uvicorn",
+    "playwright",
     "requests",
-    "beautifulsoup4",
-    "lxml",
-    "playwright>=1.56.0",
 ]
 
-# CLI entry point
 [project.scripts]
 wtdownload = "wetransfer_downloader.cli:main"
 
-# REQUIRED for packaged apps using a src/ layout
+[tool.uv]
+package = true  # required for CLI entrypoints
+
 [build-system]
-requires = ["setuptools>=61"]
+requires = ["setuptools"]
 build-backend = "setuptools.build_meta"

@@ -1,0 +1,2 @@
+[console_scripts]
+wtdownload = wetransfer_downloader.cli:main

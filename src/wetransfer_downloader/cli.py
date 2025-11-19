@@ -1,17 +1,11 @@
 import argparse
-from .downloader import WeTransferDownloader
-from .logging_config import setup_logging
+from wetransfer_downloader.downloader import WeTransferDownloader
 
 def main():
-    setup_logging()
-
-    parser = argparse.ArgumentParser(description="WeTransfer Downloader")
-    parser.add_argument("url", help="WeTransfer link")
+    parser = argparse.ArgumentParser(description="Download a file from a WeTransfer link")
+    parser.add_argument("url", help="The WeTransfer URL to download from")
     args = parser.parse_args()
 
-    downloader = WeTransferDownloader(
-        output_dir="downloads",
-        headless=True
-    )
-
-    downloader.download(args.url)
+    downloader = WeTransferDownloader(headless=True)
+    result = downloader.download(args.url)
+    print(f"Saved to: {result}")

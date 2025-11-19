@@ -1,0 +1,15 @@
+README.md
+pyproject.toml
+src/api/__init__.py
+src/api/main.py
+src/wetransfer_downloader/__init__.py
+src/wetransfer_downloader/cli.py
+src/wetransfer_downloader/downloader.py
+src/wetransfer_downloader/logging_config.py
+src/wetransfer_downloader/parser.py
+src/wetransfer_downloader.egg-info/PKG-INFO
+src/wetransfer_downloader.egg-info/SOURCES.txt
+src/wetransfer_downloader.egg-info/dependency_links.txt
+src/wetransfer_downloader.egg-info/entry_points.txt
+src/wetransfer_downloader.egg-info/requires.txt
+src/wetransfer_downloader.egg-info/top_level.txt
