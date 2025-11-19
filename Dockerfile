@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y \
     libxshmfence1 \
     libpci3 \
     wget \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -25,13 +26,13 @@ WORKDIR /app
 # Copy project files
 COPY . .
 
-# Install uv
+# Install UV
 RUN pip install uv
 
-# Install project dependencies using uv
-RUN uv pip install -r ./uv.lock --system
+# Install dependencies using uv (correct method)
+RUN uv sync --no-dev --frozen --system
 
-# Install Playwright and Chromium
+# Install Playwright + Chromium browser
 RUN playwright install chromium
 
 EXPOSE 8000
