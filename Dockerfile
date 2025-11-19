@@ -23,16 +23,16 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-# Copy project files
+# Copy all project files (including requirements.txt)
 COPY . .
 
-# Install UV
+# Install uv
 RUN pip install uv
 
-# Install dependencies using uv (correct method)
-RUN uv sync 
+# Install dependencies using uv (FOR YOUR UV VERSION)
+RUN uv pip install --system -r requirements.txt
 
-# Install Playwright + Chromium browser
+# Install Playwright + Chromium
 RUN playwright install chromium
 
 EXPOSE 8000
